@@ -1,3 +1,4 @@
+var achivers = [];
 (function(window) {
     'use strict';
     var App = window.App || {};
@@ -59,16 +60,25 @@
             fn(data);
             this.reset();
             this.elements[0].focus();
-            if (data.size == 'coffeezilla' && data.strength >= 66) {
+            if (data.size == 'coffeezilla' && data.strength >= 66 || achivers.includes(data.emailAddress)) {
+                achivers.push(data.emailAddress);
+                window.emailtoRetain = data.emailAddress;
                 $('#myModal').modal('show');
+            } else {
+                +console.log(data); +
+                fn(data); +
+                this.reset(); +
+                this.elements[0].focus();
             }
         });
     };
     FormHandler.prototype.addPowerUpOptions = function(checkBoxSelector) {
         console.log('Adding power up options in form');
         this.$formElement.on('click', function() {
-            this.$powerUpOptions = $(checkBoxSelector);
-            this.$powerUpOptions.removeClass('hide');
+            if (achivers.includes(emailtoRetain)) {
+                this.$powerUpOptions = $(checkBoxSelector);
+                this.$powerUpOptions.removeClass('hide');
+            }
         });
     };
 
